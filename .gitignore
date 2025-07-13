@@ -1,0 +1,54 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env
+.env.*
+
+# VS Code settings
+.vscode/
+
+# Pytest cache
+.cache/
+.pytest_cache/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log
+
+# Triton model repository output or temp folders
+models/**/1/
+models/**/output/
+models/**/*.pbtxt~
+
+# Video / media files
+videos/*.mp4
+videos/*.avi
+videos/*.mov
+
+# Docker
+*.pid
+*.db
+*.sock
+docker-compose.override.yml
+
+# Ignore data/results
+results/
+output/
+inference_results/
+*.npy
+*.npz
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# GitHub Actions artifacts (if any)
+.github/workflows/*.log

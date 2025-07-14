@@ -12,6 +12,7 @@
 #cd ~/ray_triton/fastapi_pipeline
 # uvicorn app.main:app --reload  --port 5000  #local fastapi server up
 #pkill -9 -f uvicorn #clean up fastapi server
+#pkill -f "uvicorn.*--reload"
 
 #cd ~/ray_triton/fastapi_pipeline
 # celery -A app.tasks worker --loglevel=info   #local celery worker up

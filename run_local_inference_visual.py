@@ -16,7 +16,7 @@ triton_url = settings.TRITON_URL.replace("http://", "").replace("https://", "")
 triton_client = httpclient.InferenceServerClient(url=triton_url)
 
 def should_visualize():
-    return settings.SHOW_GUI and os.environ.get("DISPLAY") is not None
+    return os.environ.get("DISPLAY") is not None
 
 def infer_pose(frame: np.ndarray, orig_w: int, orig_h: int, visualize: bool = True):
     resized = cv2.resize(frame, (INPUT_W, INPUT_H))
@@ -48,17 +48,6 @@ def infer_pose(frame: np.ndarray, orig_w: int, orig_h: int, visualize: bool = Tr
 
     return keypoints
 
-# def main(video_path: str):
-#     cap = cv2.VideoCapture(video_path)
-#     while cap.isOpened():
-#         ret, frame = cap.read()
-#         if not ret:
-#             break
-#         orig_h, orig_w = frame.shape[:2]
-#         infer_pose(frame, orig_w, orig_h, visualize=True)
-#     cap.release()
-#     cv2.destroyAllWindows()
-
 def main(video_path: str):
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
@@ -86,4 +75,4 @@ def main(video_path: str):
 
 
 if __name__ == "__main__":
-    main("resources/video/Djokovic_ forehand_slow _motion.mp4")  
+    main("resources/video/Djokovic_forehand_slow_motion.mp4")  

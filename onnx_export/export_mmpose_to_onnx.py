@@ -4,26 +4,38 @@ from mmpose.apis import init_model
 import torch
 import os
 
-# 파일 경로
+from mmengine.config import Config
+from mmengine.runner import load_checkpoint
+from mmpose.apis import init_model
+import torch
+import os
+
+# === File paths for config, checkpoint, and ONNX output ===
 config_file = 'mmpose_models/td-hm_mobilenetv2_8xb64-210e_coco-256x192.py'
 checkpoint_file = 'mmpose_models/td-hm_mobilenetv2_8xb64-210e_coco-256x192-55a04c35_20221016.pth'
 onnx_output = 'onnx_output/mobilenetv2_pose/1.01/model.onnx'
 
-# 모델 저장 디렉토리 생성
+# === Create output directory if it doesn't exist ===
 os.makedirs(os.path.dirname(onnx_output), exist_ok=True)
 
-# 모델 로딩 및 ONNX 변환
+# === Load model config from .py file ===
 cfg = Config.fromfile(config_file)
 
-# model = build_posenet(cfg.model)
+# === Initialize pose estimation model with checkpoint ===
 model = init_model(cfg, checkpoint_file, device='cpu')
 
+# === Load weights (optional: already done by init_model) ===
 _ = load_checkpoint(model, checkpoint_file, map_location='cpu')
 
+# === Set model to evaluation mode ===
 model.eval()
 
+# === Dummy input for ONNX tracing (batch size = 1, 3x256x192 image) ===
 dummy_input = torch.randn(1, 3, 256, 192)
 
+# === Export model to ONNX format ===
+#     - Input/output named for Triton compatibility
+#     - Batch size is dynamic (0th dim)
 torch.onnx.export(
     model,
     dummy_input,

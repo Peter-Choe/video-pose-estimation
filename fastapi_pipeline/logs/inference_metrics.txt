@@ -5,3 +5,5 @@
 2025-07-14T13:51:00.976386 | Time: 7.22 seconds | ENV: docker | Video: /tmp/2bc9bd3126ff447c900725639fd2b72d_video-for-pose-detection-1-1080x1920-30fps.mp4 
 2025-07-14T22:53:35.464961 | Time: 10.89 seconds | ENV: local | Video: /tmp/1b62a76ccd3a4d369213e63f8380f47f_video-for-pose-detection-1-1080x1920-30fps.mp4 
 2025-07-14T22:55:30.584435 | Time: 80.01 seconds | ENV: local | Video: /tmp/6cc487612cda4a7cbed52eed2503d63c_Djokovic_forehand_slow_motion.mp4 
+2025-07-15T00:09:00.392327 | Time: 99.37 seconds | ENV: local | Video: /tmp/72cb01abe13f4b939a5cead918dcadc3_Djokovic_forehand_slow_motion.mp4 
+2025-07-14T15:12:35.305272 | Time: 97.46 seconds | ENV: docker | Video: /tmp/00ad125a97964453994f162c48459fda_Djokovic_forehand_slow_motion.mp4 

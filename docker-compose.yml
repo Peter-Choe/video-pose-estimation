@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  fastapi:
+    build: ./fastapi_pipeline
+    volumes:
+      - shared_tmp:/tmp
+      - ./fastapi_pipeline:/app
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env.docker
+    depends_on:
+      - triton
+      - redis
+    command: uvicorn app.main:app --host 0.0.0.0 --port 5000
+
+  celery_worker:
+    build: ./fastapi_pipeline
+    command: celery -A app.tasks worker --loglevel=info
+    volumes:
+      - shared_tmp:/tmp
+      - ./fastapi_pipeline:/app
+    depends_on:
+      - redis
+      - triton
+    env_file:
+      - .env.docker
+
+  redis:
+    image: redis:6.0
+    ports:
+      - "6379:6379" 
+
+  triton:
+    image: nvcr.io/nvidia/tritonserver:23.03-py3
+    runtime: nvidia
+    shm_size: "1g"
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    command: tritonserver --model-repository=/models 
+    volumes:
+      - ./models:/models
+    ports:
+      - "8000:8000" 
+
+volumes:
+  shared_tmp:
+
+ # docker exec -it ray_triton_fastapi_1 bash
+ # docker logs -f ray_triton_fastapi_1
+ # docker logs -f ray_triton_celery_worker_1
+ # docker logs -f ray_triton_triton_1
+ # docker exec ray_triton_fastapi_1 env | grep ENV

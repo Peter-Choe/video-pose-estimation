@@ -99,6 +99,11 @@ docker run --rm -v $(pwd):/workspace mmpose2onnx python export_mmpose_to_onnx.py
 - Triton에서 서빙 시, `models/mobilenetv2_pose/1/model.onnx` 위치에 배치 필요
 
 ---
+## 🎥 영상 데모
+
+추론 결과 예시는 아래에서 확인하실 수 있습니다:
+
+- ▶️ [Click to watch output_pose.mp4](resources/output_video/output_pose.mp4)
 
 ## 📡 API 사용 예시
 

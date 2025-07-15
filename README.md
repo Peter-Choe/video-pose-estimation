@@ -1,11 +1,11 @@
-# 🎯 Video Pose Estimation API
+#  Video Pose Estimation API
 
 영상 파일을 입력받아 프레임 단위로 분리하고, Triton Inference Server를 통해 2D skeleton keypoints를 추출하는 비동기 기반 포즈 추정 API 시스템입니다.  
 FastAPI 서버, Celery 비동기 워커, Redis 브로커, Triton 모델 서버로 구성되며, ONNX 변환용 컨테이너도 함께 제공됩니다.
 
 ---
 
-## 🧩 주요 구성 요소
+## 주요 구성 요소
 
 | 구성 요소         | 설명 |
 |------------------|------|
@@ -16,7 +16,7 @@ FastAPI 서버, Celery 비동기 워커, Redis 브로커, Triton 모델 서버�
 
 ---
 
-## 📁 프로젝트 구조 요약
+## 프로젝트 구조 요약
 
 ```
 video-pose-estimation-api/
@@ -44,7 +44,7 @@ video-pose-estimation-api/
 
 ---
 
-## 🧪 로컬 개발 환경 실행 방법
+## 로컬 개발 환경 실행 방법
 
 ### 1. Triton + Redis 컨테이너 실행
 
@@ -70,7 +70,7 @@ celery -A fastapi_pipeline.app.core.celery_app worker --loglevel=info
 
 ---
 
-## 🚀 전체 컨테이너로 실행 (배포 또는 통합 테스트용)
+## 전체 컨테이너로 실행 (배포 또는 통합 테스트용)
 
 ```bash
 docker compose up --build
@@ -80,7 +80,7 @@ FastAPI + Celery + Redis + Triton Inference Server가 한 번에 실행됩니다
 
 ---
 
-## 🔄 MMPose → ONNX 변환 방법
+## MMPose → ONNX 변환 방법
 
 ### 1. 컨테이너 이미지 빌드
 
@@ -100,9 +100,9 @@ docker run --rm -v $(pwd):/workspace mmpose2onnx python export_mmpose_to_onnx.py
 
 ---
 
-## 📡 API 사용 예시
+## API 사용 예시
 
-### ✅ 1. 전체 시스템 실행 후 테스트
+### 1. 전체 시스템 실행 후 테스트
 
 ```bash
 python test_api.py
@@ -119,7 +119,7 @@ python test_api.py
 
 ---
 
-### ✅ 2. 로컬 Triton 추론 테스트 (GUI 시각화)
+### 2. 로컬 Triton 추론 테스트 (GUI 시각화)
 
 ```bash
 ENV=local python run_local_inference_visual.py
@@ -131,7 +131,7 @@ ENV=local python run_local_inference_visual.py
 
 ---
 
-## 🧰 주요 기술 스택
+## 주요 기술 스택
 
 - **Backend**: Python, FastAPI, Celery
 - **Inference**: Triton Inference Server, ONNX, Torch
@@ -140,6 +140,6 @@ ENV=local python run_local_inference_visual.py
 
 ---
 
-## 📝 라이선스
+## 라이선스
 
 MIT License

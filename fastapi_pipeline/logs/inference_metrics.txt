@@ -35,9 +35,6 @@
 2025-07-15T11:21:48.781641 | Time: 54.77 seconds | USE_BATCH_INFER = True | BATCH_SIZE = 8 | ENV: local | Video: /tmp/77211d503e8c43deb881cdfe262ddb6e_Djokovic_forehand_slow_motion.mp4
 2025-07-15T11:47:14.567258 | Time: 56.58 seconds | USE_BATCH_INFER = True | BATCH_SIZE = 8 | ENV: local | Video: /tmp/1392258c2a224fc3bea1060c1efca0f2_Djokovic_forehand_slow_motion.mp4
 2025-07-15T12:00:21.929539 | Time: 57.73 seconds | USE_BATCH_INFER = True | BATCH_SIZE = 8 | ENV: local | Video: /tmp/025d2f7543094250a901151e1876bebf_Djokovic_forehand_slow_motion.mp4
-Logger initialized and writing to video_pose_inference.log
-File saved to: /tmp/8bf339aed7504338ae294996b8357082_Djokovic_forehand_slow_motion.mp4 (37.49 MB)
-Dispatching video for inference: /tmp/8bf339aed7504338ae294996b8357082_Djokovic_forehand_slow_motion.mp4
 2025-07-15T12:52:45.111864 | Time: 62.96 seconds | USE_BATCH_INFER = True | BATCH_SIZE = 8 | ENV: local | Video: /tmp/9e86316ded6e43bea3cd4987bf11ae4c_Djokovic_forehand_slow_motion.mp4
 2025-07-15T03:59:53.887949 | Time: 66.73 seconds | USE_BATCH_INFER = True | BATCH_SIZE = 8 | ENV: docker | Video: /tmp/be893732ed71430ca548b75072c6d4d8_Djokovic_forehand_slow_motion.mp4
 2025-07-15T04:02:10.534283 | Time: 56.02 seconds | USE_BATCH_INFER = True | BATCH_SIZE = 8 | ENV: docker | Video: /tmp/c1464ce528694ca3aeddf03c6e53ba2e_Djokovic_forehand_slow_motion.mp4
@@ -45,3 +42,9 @@ Dispatching video for inference: /tmp/8bf339aed7504338ae294996b8357082_Djokovic_
 2025-07-15T04:04:10.749380 | Time: 71.37 seconds | USE_BATCH_INFER = True | BATCH_SIZE = 8 | ENV: docker | Video: /tmp/55c04f72b78f4964aabd6f3a06778549_Djokovic_forehand_slow_motion.mp4
 2025-07-15T04:04:11.735608 | Time: 71.18 seconds | USE_BATCH_INFER = True | BATCH_SIZE = 8 | ENV: docker | Video: /tmp/a1308cfc064a4fbf812db5c301b2e99e_Djokovic_forehand_slow_motion.mp4
 2025-07-15T04:04:13.278771 | Time: 71.10 seconds | USE_BATCH_INFER = True | BATCH_SIZE = 8 | ENV: docker | Video: /tmp/8973fb4c8e674de089ed2152195a4f65_Djokovic_forehand_slow_motion.mp4
+2025-07-15T13:08:46.285528 | Time: 55.95 seconds | USE_BATCH_INFER = True | BATCH_SIZE = 16 | ENV: local | Video: /tmp/721d24a81555465491bf6afb49b9af73_Djokovic_forehand_slow_motion.mp4
+2025-07-15T13:10:10.448785 | Time: 54.14 seconds | USE_BATCH_INFER = True | BATCH_SIZE = 16 | ENV: local | Video: /tmp/7a049a64ae074aab998b8e6bc9a2329e_Djokovic_forehand_slow_motion.mp4
+2025-07-15T13:10:11.897032 | Time: 53.58 seconds | USE_BATCH_INFER = True | BATCH_SIZE = 16 | ENV: local | Video: /tmp/011ece4573544f82b9aa7efcfb9827e4_Djokovic_forehand_slow_motion.mp4
+2025-07-15T13:11:40.272311 | Time: 65.03 seconds | USE_BATCH_INFER = True | BATCH_SIZE = 16 | ENV: local | Video: /tmp/6fc6b19e72a145658a76e8561fbb3f05_Djokovic_forehand_slow_motion.mp4
+2025-07-15T13:11:41.171652 | Time: 64.91 seconds | USE_BATCH_INFER = True | BATCH_SIZE = 16 | ENV: local | Video: /tmp/23f27855b4324f288246dfa7d25e1b6c_Djokovic_forehand_slow_motion.mp4
+2025-07-15T13:11:42.561952 | Time: 64.25 seconds | USE_BATCH_INFER = True | BATCH_SIZE = 16 | ENV: local | Video: /tmp/ae7eb4743b9646b389bb7cc928f82d63_Djokovic_forehand_slow_motion.mp4

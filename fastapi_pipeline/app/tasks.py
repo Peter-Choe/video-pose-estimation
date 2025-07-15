@@ -1,10 +1,10 @@
 from celery import Celery
 import cv2
 import numpy as np
-from app.infer_client import infer_pose, infer_pose_batch  # import both
-from app.core.config import settings
-from app.core.logging_config import logger
-from app.core.celery_app import celery
+from fastapi_pipeline.app.infer_client import infer_pose, infer_pose_batch  # import both
+from fastapi_pipeline.app.core.config import settings
+from fastapi_pipeline.app.core.logging_config import logger
+from fastapi_pipeline.app.core.celery_app import celery
 
 import os
 import random

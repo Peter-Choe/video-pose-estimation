@@ -7,4 +7,4 @@ class LocalConfig(BaseConfig):
     SHOW_GUI: bool = False  # default fallback if not in env file
 
     class Config:
-        env_file = Path("/home/hjchoi/ray_triton/.env.local")
+        env_file = ".env.local"

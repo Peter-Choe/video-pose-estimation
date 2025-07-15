@@ -1,1 +1,3 @@
 2025-07-15T15:11:06.418023 | Time: 58.46 seconds | USE_BATCH_INFER = True | BATCH_SIZE = 16 | ENV: local | Video: /tmp/3605221b4ee34803970a69ec36b09d4b_Djokovic_forehand_slow_motion.mp4
+2025-07-15T16:33:16.254826 | Time: 64.03 seconds | USE_BATCH_INFER = True | BATCH_SIZE = 16 | ENV: local | Video: /tmp/17caf9c583b64cd0b0e43ebf9361c656_Djokovic_forehand_slow_motion.mp4
+2025-07-15T16:35:29.794347 | Time: 59.72 seconds | USE_BATCH_INFER = True | BATCH_SIZE = 16 | ENV: local | Video: /tmp/95bcf9b0ceca4c4185a0be4b679223c9_Djokovic_forehand_slow_motion.mp4

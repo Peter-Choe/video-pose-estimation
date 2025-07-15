@@ -1,11 +1,11 @@
 from fastapi import FastAPI, UploadFile, File
 from celery.result import AsyncResult
-from app.core.config import settings
-from app.tasks import process_video
+from fastapi_pipeline.app.core.config import settings
+from fastapi_pipeline.app.tasks import process_video
 import uuid
 import os
 from pathlib import Path
-from app.core.logging_config import logger
+from fastapi_pipeline.app.core.logging_config import logger
 
 import os
 print(f"[LOG DEBUG] CWD: {os.getcwd()}")

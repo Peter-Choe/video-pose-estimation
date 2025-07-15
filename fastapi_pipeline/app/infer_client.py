@@ -1,4 +1,4 @@
-from app.core.config import settings
+from fastapi_pipeline.app.core.config import settings
 import cv2
 import numpy as np
 import tritonclient.http as httpclient

@@ -16,9 +16,9 @@ with open(video_path, "rb") as f:
 
 if response.status_code == 200:
     task_id = response.json().get("task_id")
-    print("✅ Task submitted:", task_id)
+    print("Task submitted:", task_id)
 else:
-    print("❌ Failed:", response.status_code, response.text)
+    print("Failed:", response.status_code, response.text)
     exit(1)
 
 

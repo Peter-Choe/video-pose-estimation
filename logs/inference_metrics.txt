@@ -1,0 +1,1 @@
+2025-07-15T15:11:06.418023 | Time: 58.46 seconds | USE_BATCH_INFER = True | BATCH_SIZE = 16 | ENV: local | Video: /tmp/3605221b4ee34803970a69ec36b09d4b_Djokovic_forehand_slow_motion.mp4

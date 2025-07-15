@@ -1,6 +1,6 @@
 name: "mobilenetv2_pose"
 platform: "onnxruntime_onnx"
-max_batch_size: 8
+max_batch_size: 16
 input [
   {
     name: "input"

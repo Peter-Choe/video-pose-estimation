@@ -6,6 +6,9 @@ from fastapi_pipeline.app.core.config import settings
 import tritonclient.http as httpclient
 
 
+
+
+
 #프로젝트 루트 가상환경에서 ENV=local python run_local_inference_visual.py 실행
 
 # Constants
@@ -17,6 +20,17 @@ STRIDE = INPUT_W // HEATMAP_W
 # Triton Client
 triton_url = settings.TRITON_URL.replace("http://", "").replace("https://", "")
 triton_client = httpclient.InferenceServerClient(url=triton_url)
+
+import signal
+import sys
+
+def cleanup_and_exit(signum, frame):
+    print("Signal received, cleaning up...")
+    cv2.destroyAllWindows()
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, cleanup_and_exit)   # Ctrl+C
+signal.signal(signal.SIGTERM, cleanup_and_exit)  # kill
 
 def should_visualize():
     return os.environ.get("DISPLAY") is not None
@@ -49,13 +63,22 @@ def infer_pose(frame: np.ndarray, orig_w: int, orig_h: int, visualize: bool = Tr
         cv2.imshow("Pose Inference", vis_display)
         cv2.waitKey(1)
 
-    return keypoints
+    return keypoints, frame  # return original-sized frame with keypoints drawn
+
 
 def main(video_path: str):
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
         print("Failed to open video file:", video_path)
         return
+
+    # Output video writer setup
+    fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # Use 'mp4v' for .mp4
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    out = cv2.VideoWriter("resources/output_video/output_pose.mp4", fourcc, fps, (width, height))
+
 
     print("Video opened, starting inference loop...")
     frame_count = 0
@@ -66,13 +89,16 @@ def main(video_path: str):
             break
 
         orig_h, orig_w = frame.shape[:2]
-        keypoints = infer_pose(frame, orig_w, orig_h, visualize=True)
+        keypoints, annotated_frame = infer_pose(frame, orig_w, orig_h, visualize=True)
+        out.write(annotated_frame)
 
         frame_count += 1
         if frame_count % 100 == 0:
             print(f"Frame {frame_count}, Keypoints: {keypoints}")
 
     cap.release()
+    out.release()
+    cv2.waitKey(100)  # Give time for imshow to process close
     cv2.destroyAllWindows()
     print("Done and windows closed.")
 

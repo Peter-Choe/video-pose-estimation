@@ -5,22 +5,25 @@ services:
     build: ./fastapi_pipeline
     volumes:
       - shared_tmp:/tmp
-      - ./fastapi_pipeline:/app
+      - ./fastapi_pipeline:/app/fastapi_pipeline
     ports:
       - "5000:5000"
     env_file:
       - .env.docker
+    environment:
+      - PYTHONPATH=/app       
     depends_on:
       - triton
       - redis
-    command: uvicorn app.main:app --host 0.0.0.0 --port 5000
-
+    command: uvicorn fastapi_pipeline.app.main:app --host 0.0.0.0 --port 5000 
   celery_worker:
     build: ./fastapi_pipeline
-    command: celery -A app.tasks worker --loglevel=info
+    command: celery -A fastapi_pipeline.app.tasks worker --loglevel=info  
     volumes:
       - shared_tmp:/tmp
-      - ./fastapi_pipeline:/app
+      - ./fastapi_pipeline:/app/fastapi_pipeline
+    environment:
+      - PYTHONPATH=/app
     depends_on:
       - redis
       - triton
@@ -47,8 +50,3 @@ services:
 volumes:
   shared_tmp:
 
- # docker exec -it ray_triton_fastapi_1 bash
- # docker logs -f ray_triton_fastapi_1
- # docker logs -f ray_triton_celery_worker_1
- # docker logs -f ray_triton_triton_1
- # docker exec ray_triton_fastapi_1 env | grep ENV

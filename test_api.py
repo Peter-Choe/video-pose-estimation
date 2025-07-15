@@ -1,31 +1,28 @@
 import requests
 from time import sleep
 
-# FastAPI 서버 URL
+import requests
+import os
+
+import requests
+import os
+
 API_URL = "http://localhost:5000/infer/"
-
-# 테스트용 비디오 파일 경로 (테스트할 비디오 파일을 적절히 지정하세요)
 video_path = "resources/video/Djokovic_forehand_slow_motion.mp4"
-#video_path = "resources/video/video-for-pose-detection-1-1080x1920-30fps.mp4"
-# 비디오 파일을 API에 업로드
-with open(video_path, "rb") as video_file:
-    files = {'file': video_file}
-    try:
-        response = requests.post(API_URL, files=files)
-        response.raise_for_status()  # Check if the request was successful (status code 200)
-    except requests.exceptions.RequestException as e:
-        print(f"API 요청 실패. 에러: {e}")
-        exit(1)  # Exit if request fails
 
-# API 응답 확인
+# Memory-safe: file streamed internally by requests
+with open(video_path, "rb") as f:
+    response = requests.post(API_URL, files={"file": (os.path.basename(video_path), f)})
+
 if response.status_code == 200:
-    print("API 요청 성공! Task ID:", response.json().get("task_id", "No task ID found"), "for video:", video_path)
     task_id = response.json().get("task_id")
+    print("✅ Task submitted:", task_id)
 else:
-    print("API 요청 실패. 상태 코드:", response.status_code)
+    print("❌ Failed:", response.status_code, response.text)
     exit(1)
 
-# # 비동기 작업 상태 확인 (Celery 작업을 확인하려면 일정 시간이 필요할 수 있습니다)
+
+# 비동기 작업 상태 조회용
 # task_status_url = f"http://localhost:8000/celery-status/{task_id}"
 
 # # 작업 상태를 주기적으로 확인

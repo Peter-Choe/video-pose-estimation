@@ -5,6 +5,9 @@ import random
 from fastapi_pipeline.app.core.config import settings
 import tritonclient.http as httpclient
 
+
+#프로젝트 루트 가상환경에서 ENV=local python run_local_inference_visual.py 실행
+
 # Constants
 MODEL_NAME = "mobilenetv2_pose"
 INPUT_W, INPUT_H = 192, 256
@@ -66,7 +69,7 @@ def main(video_path: str):
         keypoints = infer_pose(frame, orig_w, orig_h, visualize=True)
 
         frame_count += 1
-        if frame_count % 10 == 0:
+        if frame_count % 100 == 0:
             print(f"Frame {frame_count}, Keypoints: {keypoints}")
 
     cap.release()

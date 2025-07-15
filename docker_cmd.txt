@@ -15,6 +15,8 @@
 #pkill -f "uvicorn.*--reload"
 
 #cd ~/ray_triton/fastapi_pipeline
-# celery -A app.tasks worker --loglevel=info   #local celery worker up
+# celery -A app.core.celery_app worker --loglevel=info  #local celery worker up
 
 #pkill -9 -f 'celery' #clean up celery worker
+
+#watch -n 1 nvidia-smi #monitor gpu usage

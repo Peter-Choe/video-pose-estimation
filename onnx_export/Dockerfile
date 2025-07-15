@@ -1,20 +1,28 @@
-FROM pytorch/pytorch:2.1.0-cuda11.8-cudnn8-devel
+# Base image with CUDA 11.8 and cuDNN
+FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
 
-# Install required system libs
+# Set non-interactive mode for apt
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install Python and basic tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libglib2.0-0 libgl1 wget git ffmpeg \
-    && rm -rf /var/lib/apt/lists/*
+    python3 python3-pip python3-dev python3-setuptools python3-venv \
+    libglib2.0-0 libgl1 git curl wget   unzip ca-certificates \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /workspace
+# Set Python alias
+RUN ln -s /usr/bin/python3 /usr/bin/python
 
-# Copy requirements and install prebuilt mmcv + others
-COPY requirements.txt .
+# Upgrade pip
+RUN pip install --upgrade pip
 
-RUN pip install --upgrade pip && \
-    pip install mmcv==2.0.0 -f https://download.openmmlab.com/mmcv/dist/cu118/torch2.0/index.html && \
-    pip install -r requirements.txt 
+# Install PyTorch (CUDA 11.8 compatible)
+RUN pip install torch==2.0.1 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
-# Optional: copy model/config files & ONNX exporter
-COPY mmpose_models ./mmpose_models
-COPY export_mmpose_to_onnx.py ./tools/deployment/
+# Copy requirements.txt and install dependencies
+COPY requirements.txt /app/requirements.txt
+WORKDIR /app
+RUN pip install -r requirements.txt
 
+# Default command
+CMD ["python"]

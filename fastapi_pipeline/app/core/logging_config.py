@@ -32,7 +32,7 @@ class MetricsOnlyFilter(logging.Filter):
         return getattr(record, "metrics_only", False)
 
 # Metrics log file (filtered)
-metrics_log_file = os.path.abspath(f"{log_dir}/inference_metrics.txt")
+metrics_log_file = os.path.abspath(f"{log_dir}/video_inference_times.log")
 metrics_handler = logging.FileHandler(metrics_log_file)
 metrics_handler.setFormatter(logging.Formatter('%(message)s'))  # raw format
 metrics_handler.setLevel(logging.INFO)

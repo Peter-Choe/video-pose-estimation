@@ -1,0 +1,5 @@
+mmpose==1.1.0
+mmengine==0.7.4
+mmdet
+onnx==1.14.0
+numpy==1.23.5

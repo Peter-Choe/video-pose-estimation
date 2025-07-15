@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:6.0
+    ports:
+      - "6379:6379"
+
+  triton:
+    image: nvcr.io/nvidia/tritonserver:23.03-py3
+    runtime: nvidia
+    shm_size: "1g"
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    command: tritonserver --model-repository=/models 
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./models:/models
+
+

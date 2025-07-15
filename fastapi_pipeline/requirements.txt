@@ -1,0 +1,10 @@
+fastapi
+celery
+opencv-python-headless
+tritonclient[http]
+python-multipart
+uvicorn
+redis>=4.0.0
+python-dotenv
+pydantic_settings
+onnx

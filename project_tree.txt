@@ -1,0 +1,29 @@
+tree -L 2
+.
+├── docker-compose.local.yml
+├── docker-compose.yml
+├── docker_cmd.txt
+├── fastapi_pipeline
+│   ├── Dockerfile
+│   ├── app
+│   └── requirements.txt
+├── logs
+│   ├── inference_metrics.txt
+│   └── video_pose_inference.log
+├── models
+│   └── mobilenetv2_pose
+├── onnx_export
+│   ├── Dockerfile
+│   ├── Dockerfile_
+│   ├── export_mmpose_to_onnx.py
+│   ├── mmpose_models
+│   ├── models
+│   ├── onnx_model_inspect.py
+│   └── requirements.txt
+├── requirements.txt
+├── resources
+│   ├── output_video
+│   └── video
+├── run_local_inference_visual.py
+├── test_api.py
+└── venv

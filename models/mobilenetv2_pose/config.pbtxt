@@ -1,0 +1,18 @@
+name: "mobilenetv2_pose"
+platform: "onnxruntime_onnx"
+max_batch_size: 16
+input [
+  {
+    name: "input"
+    data_type: TYPE_FP32
+    format: FORMAT_NCHW
+    dims: [3, 256, 192]
+  }
+]
+output [
+  {
+    name: "heatmap"
+    data_type: TYPE_FP32
+    dims: [17, 64, 48]
+  }
+]

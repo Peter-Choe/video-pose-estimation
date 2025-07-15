@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  fastapi:
+    build: ./fastapi_pipeline
+    volumes:
+      - shared_tmp:/tmp #for uploaded video file save
+      - ./logs:/app/logs
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env.docker
+    environment:
+      - PYTHONPATH=/app       
+    depends_on:
+      - triton
+      - redis
+    command: uvicorn fastapi_pipeline.app.main:app --host 0.0.0.0 --port 5000 
+  celery_worker:
+    build: ./fastapi_pipeline
+    command: celery -A fastapi_pipeline.app.tasks worker --loglevel=info  
+    volumes:
+      - shared_tmp:/tmp  #for uploaded video file save
+      - ./logs:/app/logs
+    environment:
+      - PYTHONPATH=/app
+    depends_on:
+      - redis
+      - triton
+    env_file:
+      - .env.docker
+
+  redis:
+    image: redis:6.0
+    ports:
+      - "6379:6379" 
+
+  triton:
+    image: nvcr.io/nvidia/tritonserver:23.03-py3
+    runtime: nvidia
+    shm_size: "1g"
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    command: tritonserver --model-repository=/models 
+    volumes:
+      - ./models:/models
+    ports:
+      - "8000:8000" 
+
+volumes:
+  shared_tmp:
+

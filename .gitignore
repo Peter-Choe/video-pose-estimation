@@ -28,9 +28,9 @@ resources/output_large_video/
 # Model files  
 
 # Triton model repository output or temp folders
-models/**/1/
-models/**/output/
-models/**/*.pbtxt~
+# models/**/1/
+# models/**/output/
+# models/**/*.pbtxt~
 
 # Video / media files
 videos/*.mp4

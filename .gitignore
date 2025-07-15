@@ -23,6 +23,14 @@ dist/
 # Logs
 *.log
 
+# video files
+resources/video/*.mp4
+resources/video/*.avi
+resources/video/*.mov   
+resources/output_video/*.mp4
+resources/output_video/
+
+# Model files  
 # Triton model repository output or temp folders
 models/**/1/
 models/**/output/

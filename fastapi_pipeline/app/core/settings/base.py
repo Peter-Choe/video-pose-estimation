@@ -5,6 +5,7 @@ class BaseConfig(BaseSettings):
     TRITON_URL: str
     REDIS_URL: str
     USE_BATCH_INFER : bool = True
+    BATCH_SIZE : int = 8
 
     class Config:
         env_file_encoding = "utf-8"

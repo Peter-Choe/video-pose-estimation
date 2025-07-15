@@ -4,8 +4,8 @@ services:
   fastapi:
     build: ./fastapi_pipeline
     volumes:
-      - shared_tmp:/tmp
-      - ./fastapi_pipeline:/app/fastapi_pipeline
+      - shared_tmp:/tmp #for uploaded video file save
+      - ./logs:/app/logs
     ports:
       - "5000:5000"
     env_file:
@@ -20,8 +20,8 @@ services:
     build: ./fastapi_pipeline
     command: celery -A fastapi_pipeline.app.tasks worker --loglevel=info  
     volumes:
-      - shared_tmp:/tmp
-      - ./fastapi_pipeline:/app/fastapi_pipeline
+      - shared_tmp:/tmp  #for uploaded video file save
+      - ./logs:/app/logs
     environment:
       - PYTHONPATH=/app
     depends_on:

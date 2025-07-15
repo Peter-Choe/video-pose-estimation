@@ -19,7 +19,7 @@ print(f"[CONFIG DEBUG] ENV = {os.getenv('ENV')}, REDIS_URL = {settings.REDIS_URL
 
 
 # Batch size (can tune later)
-BATCH_SIZE = 16
+BATCH_SIZE = settings.BATCH_SIZE
 
 @celery.task
 def process_video(video_path: str):

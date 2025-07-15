@@ -66,18 +66,28 @@ def infer_pose(frame: np.ndarray, orig_w: int, orig_h: int, visualize: bool = Tr
     return keypoints, frame  # return original-sized frame with keypoints drawn
 
 
-def main(video_path: str):
+def main(video_filename: str):
+    
+    video_path = f"resources/video/{video_filename}"
+
+    
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
         print("Failed to open video file:", video_path)
         return
 
+    os.makedirs("resources/output_video", exist_ok=True)
+
     # Output video writer setup
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # Use 'mp4v' for .mp4
     fps = cap.get(cv2.CAP_PROP_FPS)
+    fps = fps if fps > 0 else 30  # fallback to default
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    out = cv2.VideoWriter("resources/output_video/output_pose.mp4", fourcc, fps, (width, height))
+    out = cv2.VideoWriter(f"resources/output_video/pose_output_{video_filename}", fourcc, fps, (width, height))
+    if not out.isOpened():
+        print("[ERROR] Failed to open VideoWriter! Check path or codec.")
+        return
 
 
     print("Video opened, starting inference loop...")
@@ -104,4 +114,6 @@ def main(video_path: str):
 
 
 if __name__ == "__main__":
-    main("resources/video/Djokovic_forehand_slow_motion.mp4")  
+
+    filename = "Djokovic_forehand_slow_motion.mp4"
+    main(filename)      

@@ -84,7 +84,7 @@ def main(video_filename: str):
     fps = fps if fps > 0 else 30  # fallback to default
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    out = cv2.VideoWriter(f"resources/output_video/pose_output_{video_filename}", fourcc, fps, (width, height))
+    out = cv2.VideoWriter(f"resources/output_video/output_pose_{video_filename}", fourcc, fps, (width, height))
     if not out.isOpened():
         print("[ERROR] Failed to open VideoWriter! Check path or codec.")
         return

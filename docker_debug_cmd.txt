@@ -1,0 +1,36 @@
+
+
+# 🔍 컨테이너 상태 확인
+docker ps
+
+# 🐚 FastAPI 컨테이너에 접속
+docker exec -it triton_pose_estimation_pipeline_fastapi_1 bash
+
+# 🧪 FastAPI 환경 변수 확인
+docker exec triton_pose_estimation_pipeline_fastapi_1 env | grep ENV
+
+# 📜 FastAPI 로그 실시간 보기
+docker logs -f triton_pose_estimation_pipeline_fastapi_1
+
+# 🧵 Celery 워커 로그 실시간 보기
+docker logs -f triton_pose_estimation_pipeline_celery_worker_1
+
+# 🔁 Triton Inference Server 로그 실시간 보기
+docker logs -f triton_pose_estimation_pipeline_triton_1
+
+# 🧠 Redis 로그 보기 (보통 단순 로그, 필요시)
+docker logs -f triton_pose_estimation_pipeline_redis_1
+
+
+# docker-compose -f docker-compose.local.yml up   #triton server, redis image up 
+#cd ~/trition_pose_estimation_pipeline
+# fastapi_pipeline.uvicorn app.main:app --reload  --port 5000  #local fastapi server up
+#pkill -9 -f uvicorn #clean up fastapi server
+#pkill -f "uvicorn.*--reload"
+
+#cd ~/trition_pose_estimation_pipeline
+# celery -A fastapi_pipeline.app.core.celery_app worker --loglevel=info  #local celery worker up
+
+#pkill -9 -f 'celery' #clean up celery worker
+
+#watch -n 1 nvidia-smi #monitor gpu usage

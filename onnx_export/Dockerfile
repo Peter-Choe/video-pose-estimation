@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Install Python and basic tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 python3-pip python3-dev python3-setuptools python3-venv \
-    libglib2.0-0 libgl1 git curl wget   unzip ca-certificates \
+    libglib2.0-0 libgl1 git curl wget unzip ca-certificates \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set Python alias
@@ -18,6 +18,9 @@ RUN pip install --upgrade pip
 
 # Install PyTorch (CUDA 11.8 compatible)
 RUN pip install torch==2.0.1 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+
+# Install MMCV (CUDA 11.8 + PyTorch 2.0.1)
+RUN pip install mmcv==2.0.0 -f https://download.openmmlab.com/mmcv/dist/cu118/torch2.0/index.html
 
 # Copy requirements.txt and install dependencies
 COPY requirements.txt /app/requirements.txt

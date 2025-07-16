@@ -35,12 +35,19 @@ Client → FastAPI → Celery → Triton → 결과 저장 및 시각화
 > GPU: **NVIDIA GeForce RTX 3060 Laptop (6GB VRAM)**  
 > ⚠️ 노트북 GPU 성능은 데스크탑 대비 약 30% 낮을 수 있음
 
-| 조건                      | 평균 처리 시간 | GPU 사용률 | 비고 |
-|---------------------------|----------------|-------------|------|
-| Non-batch (1 요청)        | 약 85.5초      | ~50%        | 기준선 |
-| Non-batch (3 concurrent)  | 약 127.5초     | ~55%        | 성능 저하, 큐 병목 |
-| Batch-16 (4 concurrent)   | 약 86.5초      | ~80%        | 성능 회복, GPU 효율 ↑ |
-| Batch-32 (4 concurrent)   | 약 91.1초      | ~83%        | 약간 느림, 대기 오버헤드 가능 |
+| 조건                   | 평균 처리 시간 | GPU 사용률 | 비고                             |
+| -------------------- | -------- | ------- | ------------------------------ |
+| Non-batch (1개 동영상)   | 약 85.5초  | \~50%   | 기준 성능                          |
+| Non-batch (동시 3건 요청) | 약 127.5초 | \~55%   | 요청이 몰리며 다소 지연 발생 (Triton 큐 대기) |
+| Batch-16 × 4건 요청     | 약 86.5초  | \~80%   | 성능 회복, GPU 활용도 향상              |
+| Batch-32 × 4건 요청     | 약 91.1초  | \~87%   | 배치 준비·큐 대기로 소폭 증가 가능성          |
+
+⚠️ 위 결과는 약 5분 길이의 **슬로우모션 테니스 영상**  
+`Djokovic_forehand_slow_motion.mp4`를 기준으로 측정되었습니다.  
+일반 영상은 프레임 수가 적어 처리 시간은 짧지만, 프레임 변화가 커 포즈 정확도는 낮아질 수 있습니다.
+
+- ▶️ [Djokovic_forehand_slow_motion.mp4](resources/video/Djokovic_forehand_slow_motion.mp4)
+
 
 ---
 
@@ -130,6 +137,8 @@ docker compose up --build
 ---
 
 ## 🔄 MMPose → ONNX 변환 방법
+본 프로젝트에서는 Triton Inference Server 환경에 맞추어, MMPose의 PyTorch 모델을 ONNX 형식으로 변환하여 서빙하였습니다.
+ONNX는 다양한 플랫폼과 호환되는 범용 포맷으로, Triton에서 모델을 비교적 쉽게 배포하고 추론할 수 있는 장점이 있습니다.
 
 ### 1. 컨테이너 이미지 빌드
 ```bash

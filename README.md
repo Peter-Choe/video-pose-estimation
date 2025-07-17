@@ -1,9 +1,14 @@
-
 # 🎯 Video Pose Estimation
 
-2D Skeleton Keypoints를 영상에서 추출하는 비동기 기반 API 파이프라인입니다.  
-FastAPI, Celery, Redis, Triton Inference Server 기반으로 구성되어 있으며, ONNX 변환 및 실시간 추론 최적화를 포함합니다.
+FastAPI, Celery, Redis, Triton 기반의 2D Skeleton 추론 파이프라인입니다.  
+실제 동영상에서 keypoint를 추출하고, 병렬 처리 및 GPU 성능을 실험한 결과를 포함합니다.
 
+---
+## 🎥 영상 데모
+
+- ▶️ [output_pose.mp4  (15초 슬로우모션 결과)](https://drive.google.com/file/d/1T3WjgtZQ7LvWhscR1ontnD3E2aMBUDIp/view?usp=drive_link)
+- ▶️ [output_pose_Djokovic_compressed.mp4 (5분 슬로우모션 결과)](https://drive.google.com/file/d/1BHyoYVqeUC3mfSRxbsDVUL8qJQQEDz94/view?usp=drive_link)
+- ▶️ [Djokovic_forehand_slow_motion.mp4 (입력 영상)](https://drive.google.com/file/d/1cu2y3wpreLL0c_2U4F8Jr8hrPD1dJt5F/view?usp=drive_link)
 ---
 
 ## 🧩 주요 구성 요소
@@ -37,17 +42,12 @@ Client → FastAPI → Celery → Triton → 결과 저장 및 시각화
 
 | 조건                   | 평균 처리 시간 | GPU 사용률 | 비고                             |
 | -------------------- | -------- | ------- | ------------------------------ |
-| Non-batch (1개 동영상)   | 약 85.5초  | \~50%   | 기준 성능                          |
-| Non-batch (동시 3건 요청) | 약 127.5초 | \~55%   | 요청이 몰리며 다소 지연 발생 (Triton 큐 대기) |
-| Batch-16 × 4건 요청     | 약 86.5초  | \~80%   | 성능 회복, GPU 활용도 향상              |
-| Batch-32 × 4건 요청     | 약 91.1초  | \~87%   | 배치 준비·큐 대기로 소폭 증가 가능성          |
+| Non-batch (1개 동영상)   | 약 85.5초  | ~50%   | 기준 성능                          |
+| Non-batch (동시 3건 요청) | 약 127.5초 | ~55%   | 요청이 몰리며 다소 지연 발생 (Triton 큐 대기) |
+| Batch-16 × 4건 요청     | 약 86.5초  | ~80%   | 성능 회복, GPU 활용도 향상              |
+| Batch-32 × 4건 요청     | 약 91.1초  | ~87%   | 배치 준비·큐 대기로 소폭 증가 가능성          |
 
-⚠️ 위 결과는 약 5분 길이의 **슬로우모션 테니스 영상**  
-`Djokovic_forehand_slow_motion.mp4`를 기준으로 측정되었습니다.  
-일반 영상은 프레임 수가 적어 처리 시간은 짧지만, 프레임 변화가 커 포즈 정확도는 낮아질 수 있습니다.
-
-- ▶️ [Djokovic_forehand_slow_motion.mp4](resources/video/Djokovic_forehand_slow_motion.mp4)
-
+⚠️ 위 결과는 약 5분 길이의 **슬로우모션 테니스 영상**(`Djokovic_forehand_slow_motion.mp4`) 기준으로 측정되었습니다.
 
 ---
 
@@ -96,10 +96,10 @@ video-pose-estimation-api/
 ├── onnx_export/
 │   ├── export_mmpose_to_onnx.py
 │   └── models/
-├── models/                           # Triton 서빙용
-├── resources/video/                 # 입력 영상
-├── resources/output_video/          # 결과 영상
-├── logs/                            # 추론 로그
+├── models/
+├── resources/video/
+├── resources/output_video/
+├── logs/
 ├── test_api.py
 └── run_local_inference_visual.py
 ```
@@ -112,7 +112,6 @@ video-pose-estimation-api/
 ```bash
 docker compose -f docker-compose.local.yml up
 ```
-> `localhost:8000` (Triton), `localhost:6379` (Redis) 노출됨
 
 ### 2. FastAPI 서버 실행
 ```bash
@@ -123,22 +122,20 @@ uvicorn fastapi_pipeline.app.main:app --reload --port 5000
 ```bash
 celery -A fastapi_pipeline.app.core.celery_app worker --loglevel=info
 ```
+
 > `.env.local` 또는 `.env.docker`를 통한 환경변수 설정 필요
 
 ---
 
-## 🚀 전체 컨테이너로 실행 (배포 또는 통합 테스트용)
+## 🚀 전체 컨테이너로 실행
 
 ```bash
 docker compose up --build
 ```
-> FastAPI + Celery + Redis + Triton Inference Server가 한 번에 실행됩니다.
 
 ---
 
 ## 🔄 MMPose → ONNX 변환 방법
-본 프로젝트에서는 Triton Inference Server 환경에 맞추어, MMPose의 PyTorch 모델을 ONNX 형식으로 변환하여 서빙하였습니다.
-ONNX는 다양한 플랫폼과 호환되는 범용 포맷으로, Triton에서 모델을 비교적 쉽게 배포하고 추론할 수 있는 장점이 있습니다.
 
 ### 1. 컨테이너 이미지 빌드
 ```bash
@@ -152,22 +149,13 @@ docker run --rm -v $(pwd):/workspace mmpose2onnx python export_mmpose_to_onnx.py
 ```
 
 - 변환된 모델: `onnx_export/models/mobilenetv2_pose/model.onnx`
-- Triton에서 서빙 시, `models/mobilenetv2_pose/1/model.onnx` 위치에 배치 필요
-
----
-
-## 🎥 영상 데모
-
-추론 결과 예시는 아래에서 확인하실 수 있습니다:
-
-- ▶️ [output_pose_Djokovic_compressed.mp4](resources/output_video/output_pose_Djokovic_compressed.mp4)
-- ▶️ [output_pose.mp4](resources/output_video/output_pose.mp4)
+- Triton에서 서빙 시: `models/mobilenetv2_pose/1/model.onnx`
 
 ---
 
 ## 📡 API 사용 예시
 
-### ✅ 1. 전체 시스템 실행 후 테스트
+### 1. 전체 시스템 실행 후 테스트
 ```bash
 python test_api.py
 ```
@@ -183,7 +171,7 @@ python test_api.py
 
 ---
 
-### ✅ 2. 로컬 Triton 추론 테스트 (GUI 시각화)
+### 2. 로컬 Triton 추론 테스트 (GUI 시각화)
 
 ```bash
 ENV=local python run_local_inference_visual.py
@@ -192,12 +180,6 @@ ENV=local python run_local_inference_visual.py
 - Triton 서버에 직접 추론 요청
 - 시각화된 keypoint를 실시간 출력 (`DISPLAY` 환경 필요)
 - 결과는 `resources/output_video/`에 mp4 파일로 저장
-
-## ⚠️ 모델 학습 및 성능 관련 참고
-
-- 본 프로젝트는 MMPose에서 제공하는 **사전 학습 모델(weight)**을 사용하여 추론 파이프라인을 구성하였습니다.
-- **Fine-tuning**이나 **정량적 평가**는 수행하지 않았으며, 입력 품질에 따라 성능이 달라질 수 있습니다.
-- 향후 개선 방향으로는 사용자 데이터 기반 학습, keypoint 기반 동작 분류 모델 연동, OKS 등 평가 지표 적용 등이 있습니다.
 
 ---
 
@@ -208,5 +190,3 @@ ENV=local python run_local_inference_visual.py
 - **Pose Model**: MMPose (Top-down, MobileNetV2)
 - **Infra**: Docker, Redis, Docker Compose
 - **테스트 환경**: WSL2 + **RTX 3060 Laptop (6GB VRAM)**
-
----

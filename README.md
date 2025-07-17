@@ -190,6 +190,13 @@ ENV=local python run_local_inference_visual.py
 - 결과는 `resources/output_video/`에 mp4 파일로 저장
 
 ---
+## ⚠️ 모델 학습 및 성능 관련 참고
+
+- 본 프로젝트는 MMPose에서 제공하는 **사전 학습 모델(weight)**을 사용하여 추론 파이프라인을 구성하였습니다.
+- **Fine-tuning**이나 **정량적 평가**는 수행하지 않았으며, 입력 품질에 따라 성능이 달라질 수 있습니다.
+- 향후 개선 방향으로는 사용자 데이터 기반 학습, keypoint 기반 동작 분류 모델 연동, OKS 등 평가 지표 적용 등이 있습니다.
+
+---
 
 ## 🧰 기술 스택 요약
 

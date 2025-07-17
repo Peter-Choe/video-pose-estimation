@@ -9,7 +9,14 @@ FastAPI, Celery, Redis, Triton 기반의 2D Skeleton 추론 파이프라인입�
 - ▶️ [output_pose.mp4  (15초 슬로우모션 결과)](https://drive.google.com/file/d/1T3WjgtZQ7LvWhscR1ontnD3E2aMBUDIp/view?usp=drive_link)
 - ▶️ [output_pose_Djokovic_compressed.mp4 (5분 슬로우모션 결과)](https://drive.google.com/file/d/1BHyoYVqeUC3mfSRxbsDVUL8qJQQEDz94/view?usp=drive_link)
 - ▶️ [Djokovic_forehand_slow_motion.mp4 (입력 영상)](https://drive.google.com/file/d/1cu2y3wpreLL0c_2U4F8Jr8hrPD1dJt5F/view?usp=drive_link)
+
+✅ 두 결과 모두 슬로우모션 영상 기반이며,
+15초 영상은 배경이 단순하고 인물 중심의 구도로 포즈 추정 정확도가 상대적으로 높게 나타났습니다.
+반면, 5분 테니스 영상은 관중석·소품 등 복잡한 배경이 존재하여 일부 keypoint 누락이나 왜곡이 관찰됩니다.
+이는 Top-down 기반 MMPose 모델이 배경이 단순할수록 높은 정확도를 보인다는 점을 보여주는 사례입니다.
+
 ---
+
 
 ## 🧩 주요 구성 요소
 
@@ -75,12 +82,20 @@ Client → FastAPI → Celery → Triton → 결과 저장 및 시각화
 
 ## 🔄 YOLO 연동 확장성
 
-- 현재는 **중앙에 위치한 단일 인물**을 crop하여 포즈를 추론합니다.
-- 사용한 MMPose 모델은 **사람 감지 기능 없이**, crop된 인물 이미지를 입력으로 받습니다.
-- 추후 YOLO 등과 연동하면 **여러 사람에 대한 bbox를 자동 추출**하여, 각 인물의 포즈를 개별 추론할 수 있습니다.
-- 이는 **실시간 행동 인식**이나 **AI 광고 분석** 시스템 등으로의 확장에 활용될 수 있습니다.
+- 현재는 **전체 프레임을 192×256으로 resize**하여 포즈를 추론합니다.
+- 사용한 MMPose 모델은 **사람 감지 기능 없이**, 인물이 포함된 이미지 전체를 입력으로 받습니다.
+- 이로 인해 **인물이 화면 중심에 위치하지 않거나 배경이 복잡할 경우**, 포즈 추정 정확도가 저하될 수 있습니다.
+- 추후 YOLO 등의 detector와 연동하면, **여러 사람의 bounding box를 자동 추출**하여 인물 중심 crop 후 개별 포즈를 정확히 추론할 수 있습니다.
+- 이는 **실시간 행동 인식**, **AI 광고 분석**, **멀티 인물 트래킹** 시스템 등으로의 확장에 활용될 수 있습니다.
 
 ---
+## 🔄 YOLO 연동 확장성
+
+- 현재는 **전체 프레임을 192×256으로 resize**하여 포즈를 추론합니다.
+- 사용한 MMPose 모델은 **사람 감지 기능 없이**, 인물이 포함된 이미지 전체를 입력으로 받습니다.
+- 이로 인해 **인물이 화면 중심에 위치하지 않거나 배경이 복잡할 경우**, 포즈 추정 정확도가 저하될 수 있습니다.
+- 추후 YOLO 등의 detector와 연동하면, **여러 사람의 bounding box를 자동 추출**하여 인물 중심 crop 후 개별 포즈를 정확히 추론할 수 있습니다.
+- 이는 **실시간 행동 인식**, **AI 광고 분석**, **멀티 인물 트래킹** 시스템 등으로의 확장에 활용될 수 있습니다.
 
 ## 📁 프로젝트 구조 요약
 
